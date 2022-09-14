@@ -1,14 +1,15 @@
 package com.example.ecommerce.model.Product_models;
 
+import com.example.ecommerce.model.Product_models.category.Category;
+import com.example.ecommerce.model.Product_models.category.MainCategory;
+import com.example.ecommerce.model.Product_models.details.*;
 import com.example.ecommerce.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -64,5 +65,12 @@ public class Product {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<ProductSpec> productSpecs = new java.util.LinkedHashSet<>();
+    private Set<ProductSpec> productSpecs = new HashSet<>();
+
+
+
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,mappedBy = "catId")
+    private Set<Category> categories=new HashSet<>();
+
+
 }

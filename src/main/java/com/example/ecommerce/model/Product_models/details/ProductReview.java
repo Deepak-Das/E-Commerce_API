@@ -1,10 +1,17 @@
-package com.example.ecommerce.model.Product_models;
+package com.example.ecommerce.model.Product_models.details;
 
+import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.User;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@Setter
+@Getter
 @Table(name = "product_review")
 public class ProductReview {
     @Id

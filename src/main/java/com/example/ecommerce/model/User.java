@@ -1,13 +1,12 @@
 package com.example.ecommerce.model;
 
 import com.example.ecommerce.model.Product_models.Product;
-import com.example.ecommerce.model.Product_models.ProductReview;
+import com.example.ecommerce.model.Product_models.details.ProductReview;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
