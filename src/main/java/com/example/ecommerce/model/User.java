@@ -20,7 +20,7 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long userId;
+    private Long userId;
     @Column(length = 50)
     private String email;
     @Column(length = 20)
@@ -29,9 +29,11 @@ public class User {
     private String role;
     @Column(length = 25)
     private String password;
+    @Column(nullable = false)
+    private boolean isBlock;
 
     @Column(unique = true)
-    private long phone;
+    private Long phone;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Address> addresses=new HashSet<>();
