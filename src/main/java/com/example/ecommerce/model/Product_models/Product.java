@@ -1,8 +1,8 @@
 package com.example.ecommerce.model.Product_models;
 
 import com.example.ecommerce.model.Product_models.category.Category;
-import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.details.*;
+import com.example.ecommerce.model.Product_models.orders.TbOrderDetail;
 import com.example.ecommerce.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,30 +47,35 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
     private Set<ProductImage> productImageList = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<ProductShape> productShapes = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product",cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<ProductSize> productSizes = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
     private Set<ProductColor> productColors = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product")
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
     private Set<ProductReview> productReviews = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false,referencedColumnName = "stockId",name = "stock_id")
-    private Stock stock;
-
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
     private Set<ProductSpec> productSpecs = new HashSet<>();
 
-
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private Set<Stock> stock=new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,mappedBy = "catId")
     private Set<Category> categories=new HashSet<>();
+
+
+
+    //Order
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    private Set<TbOrderDetail> orderDetails = new HashSet<>();
+
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    private Set<Cart> carts = new HashSet<>();
 
 
 }

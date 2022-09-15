@@ -1,10 +1,13 @@
 package com.example.ecommerce.model;
 
+import com.example.ecommerce.model.Product_models.orders.TbOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "address")
@@ -31,6 +34,10 @@ public class Address {
     @ManyToOne()
     @JoinColumn(name = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "address",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private Set<TbOrder> orders=new HashSet<>();
+
 
 
 

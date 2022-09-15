@@ -23,9 +23,22 @@ public class Stock {
     @Column(nullable = false)
     private int debate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id",referencedColumnName = "productId",nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "shape_id")
+    private  ProductShape shape;
+    @ManyToOne()
+    @JoinColumn(name = "size_id")
+    private ProductSize size;
+    @ManyToOne()
+    @JoinColumn(name = "color_id")
+    private ProductColor color;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false,name = "product_id")
     private Product product;
+
+
+
 
 
 

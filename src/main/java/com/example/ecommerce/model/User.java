@@ -1,7 +1,9 @@
 package com.example.ecommerce.model;
 
+import com.example.ecommerce.model.Product_models.Cart;
 import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.Product_models.details.ProductReview;
+import com.example.ecommerce.model.Product_models.orders.TbOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +41,15 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<ProductReview> productReviews=new HashSet<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    private Set<TbOrder> orders=new HashSet<>();
+
+    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
+
+
 
 
 }

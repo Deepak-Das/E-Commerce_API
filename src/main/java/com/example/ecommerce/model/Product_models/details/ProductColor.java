@@ -1,11 +1,14 @@
 package com.example.ecommerce.model.Product_models.details;
 
 import com.example.ecommerce.model.Product_models.Product;
+import com.example.ecommerce.model.Product_models.orders.TbOrderDetail;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,5 +28,13 @@ public class ProductColor {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @OneToMany(mappedBy = "color" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    private Set<TbOrderDetail> orderDetails=new HashSet<>();
+
+    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    private Set<Stock> stocks=new HashSet<>();
+
+    @OneToMany(mappedBy = "color" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<ProductColor> colors=new HashSet<>();
 
 }
