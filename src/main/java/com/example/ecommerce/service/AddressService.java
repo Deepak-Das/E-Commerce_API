@@ -4,7 +4,7 @@ import com.example.ecommerce.payload.AddressDto;
 
 import java.util.Set;
 
-public interface Address {
+public interface AddressService {
     public AddressDto createAddress(AddressDto addressDto,Long UserId);
     public AddressDto updateAddress(AddressDto addressDto,Long UserId ,Long addressId);
     public void deleteAddress(Long addressId);
