@@ -18,7 +18,7 @@ public class GlobalException {
     @ExceptionHandler(AlreadyExistException.class)
     public ResponseEntity<ErrorResponse> alreadyExistException(AlreadyExistException ex){
         ErrorResponse response=new ErrorResponse(ex.getMessage(),"Fail to Create");
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

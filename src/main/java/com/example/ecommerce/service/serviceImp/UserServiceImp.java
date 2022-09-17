@@ -10,6 +10,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 public class UserServiceImp implements UserService {
     @Autowired
@@ -20,9 +24,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto creatUser(UserDto userDto) {
-        boolean userExist = userRepo.existsUserByEmail(userDto.getEmail());
+        boolean userExistWithEmail = userRepo.existsUserByEmail(userDto.getEmail());
+        boolean userExistWithPhone = userRepo.existsUserByPhone(userDto.getPhone());
 
-        if (userExist) throw new AlreadyExistException("User", "email", userDto.getEmail());
+        if (userExistWithEmail) throw new AlreadyExistException("User", "email", userDto.getEmail());
+        if (userExistWithPhone) throw new AlreadyExistException("User", "phone number", userDto.getPhone());
 
         User newUser =mapper.map(userDto,User.class);
 
@@ -52,5 +58,18 @@ public class UserServiceImp implements UserService {
         updatedUser.setBlock(true);
 
         return mapper.map(userRepo.save(updatedUser),UserDto.class);
+    }
+
+    @Override
+    public UserDto getUser(Long userId) {
+        boolean userExist = userRepo.existsById(userId);
+        if (!userExist) throw new ResourceNotFoundException("User", "userId", userId.toString());
+        return mapper.map(userRepo.findById(userId),UserDto.class);
+    }
+
+    @Override
+    public Set<UserDto> getAllUser() {
+        Set<UserDto> urs = userRepo.findAll().stream().map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toSet());
+        return urs;
     }
 }

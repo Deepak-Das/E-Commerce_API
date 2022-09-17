@@ -9,5 +9,5 @@ import lombok.Setter;
 @Getter
 public class ErrorResponse {
     private String message;
-    private String Error_code;
+    private String ErrorStatus;
 }

@@ -19,15 +19,22 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long addressId;
 
-    @Column(nullable = false)
+    @Column(nullable = false,length = 20)
     private String fullName;
+    @Column(nullable = false,length = 20)
+    private String house;
+    @Column(nullable = false,length = 20)
+    private String village_Town;
+    @Column(nullable = false,length = 20)
+    private String Street;
+    @Column(nullable = false,length = 20)
+    private String state;
     @Column(nullable = false)
-    private String detail;
-
-    @Column(nullable = false)
-    private long phone;
-
-
+    private Integer pin;
+    @Column(nullable = false,length = 20)
+    private String landMark;
+    @Column(nullable = false,length = 13)
+    private String phone;
     @Column(nullable = false)
     private boolean isDefault;
 

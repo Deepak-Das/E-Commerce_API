@@ -27,13 +27,13 @@ public class User {
     private String fullName;
     @Column(length = 10)
     private String role;
-    @Column(length = 25)
+    @Column(length = 20)
     private String password;
     @Column(nullable = false)
     private boolean isBlock;
 
-    @Column(unique = true)
-    private Long phone;
+    @Column(unique = true,length = 13)
+    private String phone;
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Address> addresses=new HashSet<>();
