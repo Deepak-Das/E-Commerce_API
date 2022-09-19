@@ -4,19 +4,21 @@ import com.example.ecommerce.model.Product_models.Cart;
 import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.Product_models.details.ProductReview;
 import com.example.ecommerce.model.Product_models.orders.TbOrder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 @Setter
 @Getter
-@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

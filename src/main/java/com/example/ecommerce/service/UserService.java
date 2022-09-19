@@ -13,4 +13,6 @@ public interface UserService {
 
    public UserDto getUser(Long userId);
    public Set<UserDto> getAllUser();
+
+//   public UserDto getAddressByUser(Long userId);
 }

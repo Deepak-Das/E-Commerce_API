@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,4 +46,7 @@ public class UserDto {
     @Pattern(regexp = "^[+]91\\d{10}", message = "you have provided invalid phone number")
     //Error in validation constraint
     private String phone;
+
+//    private Set<AddressDto> addressDto=new HashSet<>();
+
 }

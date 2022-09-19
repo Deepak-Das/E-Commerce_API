@@ -1,6 +1,7 @@
 package com.example.ecommerce.model;
 
 import com.example.ecommerce.model.Product_models.orders.TbOrder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,11 +14,10 @@ import java.util.Set;
 @Table(name = "address")
 @Setter
 @Getter
-@NoArgsConstructor
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long addressId;
+    private Long addressId;
 
     @Column(nullable = false,length = 20)
     private String fullName;
@@ -29,16 +29,16 @@ public class Address {
     private String Street;
     @Column(nullable = false,length = 20)
     private String state;
-    @Column(nullable = false)
-    private Integer pin;
+    @Column(nullable = false,length = 10)
+    private String pin;
     @Column(nullable = false,length = 20)
     private String landMark;
     @Column(nullable = false,length = 13)
     private String phone;
     @Column(nullable = false)
-    private boolean isDefault;
+    private boolean type;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
     private User user;
 

@@ -1,5 +1,7 @@
 package com.example.ecommerce.exception;
 
+import lombok.Data;
+
 public class ResourceNotFoundException extends RuntimeException{
     private String entity,fieldName,fieldValue;
 

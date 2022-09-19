@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,22 +30,30 @@ public class UserServiceImp implements UserService {
         if (userExistWithEmail) throw new AlreadyExistException("User", "email", userDto.getEmail());
         if (userExistWithPhone) throw new AlreadyExistException("User", "phone number", userDto.getPhone());
 
-        User newUser =mapper.map(userDto,User.class);
+        User newUser = mapper.map(userDto, User.class);
 
-        return mapper.map(userRepo.save(newUser),UserDto.class);
+        return mapper.map(userRepo.save(newUser), UserDto.class);
     }
 
     @Override
     public UserDto updateUser(UserDto userDto, Long userId) {
-        boolean userExist = userRepo.existsById(userId);
+        User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId.toString()));
+        Optional<User> userByEmail = userRepo.findUserByEmail(userDto.getEmail());
+        Optional<User> userByPhone = userRepo.findUserByPhone(userDto.getPhone());
 
-        if (!userExist) throw new ResourceNotFoundException("User", "email", userDto.getEmail());
 
-        User updatedUser=mapper.map(userDto,User.class);
+//        System.out.println(isUserExistWithEmail);
+
+        if (userByEmail.isPresent() && userByEmail.get().getUserId() != userId)
+            throw new AlreadyExistException("User", "email", userDto.getEmail());
+        if (userByPhone.isPresent() && userByPhone.get().getUserId() != userId)
+            throw new AlreadyExistException("User", "phone", userDto.getPhone());
+
+        User updatedUser = mapper.map(userDto, User.class);
         updatedUser.setUserId(userId);
 
 
-        return mapper.map(userRepo.save(updatedUser),UserDto.class);
+        return mapper.map(userRepo.save(updatedUser), UserDto.class);
     }
 
     @Override
@@ -54,17 +62,20 @@ public class UserServiceImp implements UserService {
 
         if (!userExist) throw new ResourceNotFoundException("User", "userId", userId.toString());
 
-        User updatedUser=userRepo.findById(userId).get();
+        User updatedUser = userRepo.findById(userId).get();
         updatedUser.setBlock(true);
 
-        return mapper.map(userRepo.save(updatedUser),UserDto.class);
+        return mapper.map(userRepo.save(updatedUser), UserDto.class);
     }
 
     @Override
     public UserDto getUser(Long userId) {
-        boolean userExist = userRepo.existsById(userId);
-        if (!userExist) throw new ResourceNotFoundException("User", "userId", userId.toString());
-        return mapper.map(userRepo.findById(userId),UserDto.class);
+        User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId.toString()));
+//        Set<AddressDto> collect = user.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class)).collect(Collectors.toSet());
+
+        UserDto dto = mapper.map(user, UserDto.class);
+//        dto.setAddressDto(collect);
+        return dto;
     }
 
     @Override
