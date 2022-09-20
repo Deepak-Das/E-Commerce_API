@@ -34,7 +34,5 @@ public class ProductColor {
     @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private Set<Stock> stocks=new HashSet<>();
 
-    @OneToMany(mappedBy = "color" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<ProductColor> colors=new HashSet<>();
 
 }

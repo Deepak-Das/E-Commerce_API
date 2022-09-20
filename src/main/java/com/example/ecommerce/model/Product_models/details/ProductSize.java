@@ -35,8 +35,6 @@ public class ProductSize {
     @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private Set<Stock> stocks=new HashSet<>();
 
-    @OneToMany(mappedBy = "size" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<ProductSize> sizes=new HashSet<>();
 
 
 

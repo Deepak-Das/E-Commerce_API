@@ -28,6 +28,7 @@ public class Product {
     @Column(length = 100)
     private String description;
 
+
     private int discount;
 
     @Column(nullable = false)
