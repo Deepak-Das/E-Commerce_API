@@ -25,7 +25,10 @@ public class Product {
     @Column(nullable = false)
     private int amount;
 
-    @Column(length = 100)
+    @Column(nullable = false,length = 100)
+    private String title;
+
+    @Column(length = 200)
     private String description;
 
 
