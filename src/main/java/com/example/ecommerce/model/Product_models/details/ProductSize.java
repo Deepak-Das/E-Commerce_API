@@ -32,7 +32,7 @@ public class ProductSize {
     @OneToMany(mappedBy = "size" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private Set<TbOrderDetail> orderDetails=new HashSet<>();
 
-    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     private Set<Stock> stocks=new HashSet<>();
 
 

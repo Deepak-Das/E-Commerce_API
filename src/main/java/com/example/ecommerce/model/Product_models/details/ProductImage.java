@@ -26,7 +26,7 @@ public class ProductImage {
     @Column(nullable = false)
     private String type;
 
-
+    //Todo:image with different color (one to Many with Color)
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
