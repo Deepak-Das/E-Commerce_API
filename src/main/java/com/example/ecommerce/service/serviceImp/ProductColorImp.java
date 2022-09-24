@@ -25,6 +25,7 @@ public class ProductColorImp implements ProductColorService {
     public ProductColorDto createPdColor(ProductColorDto productColorDto, Long productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId.toString()));
         ProductColor pdC = mapper.map(productColorDto, ProductColor.class);
+        pdC.setProduct(product);
         ProductColor save = productColorRepo.save(pdC);
         return mapper.map(save,ProductColorDto.class);
     }

@@ -27,6 +27,7 @@ public class ProductShapeImp implements ProductShapeService {
     public ProductShapeDto createPdShape(ProductShapeDto productShapeDto, Long productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId.toString()));
         ProductShape pdS = mapper.map(productShapeDto, ProductShape.class);
+        pdS.setProduct(product);
         ProductShape save = productShapeRepo.save(pdS);
         return mapper.map(save, ProductShapeDto.class);
     }
