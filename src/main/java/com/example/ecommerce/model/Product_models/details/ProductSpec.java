@@ -24,7 +24,7 @@ public class ProductSpec {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
 

@@ -6,14 +6,13 @@ import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.AddressDto;
 import com.example.ecommerce.repository.AddressRepo;
 import com.example.ecommerce.repository.UserRepo;
-import com.example.ecommerce.service.AddressService;
+import com.example.ecommerce.service.user_service.AddressService;
 import com.example.ecommerce.util.ApiResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

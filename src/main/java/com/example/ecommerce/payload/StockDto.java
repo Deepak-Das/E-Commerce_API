@@ -4,6 +4,9 @@ import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.Product_models.details.ProductColor;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSize;
+import com.example.ecommerce.payload.Product.ProductColorDto;
+import com.example.ecommerce.payload.Product.ProductShapeDto;
+import com.example.ecommerce.payload.Product.ProductSizeDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,9 +22,9 @@ public class StockDto {
     private int credit;
     private int debate;
 
-    private ProductShape shape;
-    private ProductSize size;
-    private ProductColor color;
+    private ProductShapeDto shape;
+    private ProductSizeDto size;
+    private ProductColorDto color;
 
 //    private Product product;
 

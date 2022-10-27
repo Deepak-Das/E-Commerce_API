@@ -25,7 +25,7 @@ public class ProductShape {
     private String shape;
 
     @ManyToOne()
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
     @OneToMany(mappedBy = "shape" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)

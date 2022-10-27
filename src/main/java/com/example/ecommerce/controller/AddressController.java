@@ -1,17 +1,13 @@
 package com.example.ecommerce.controller;
 
-import com.example.ecommerce.model.Address;
 import com.example.ecommerce.payload.AddressDto;
-import com.example.ecommerce.repository.AddressRepo;
-import com.example.ecommerce.service.AddressService;
+import com.example.ecommerce.service.user_service.AddressService;
 import com.example.ecommerce.util.ApiResponse;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Access;
 import javax.validation.Valid;
 import java.util.Set;
 
@@ -42,8 +38,10 @@ public class AddressController {
         return new ResponseEntity<>(allAddressByUser,HttpStatus.FOUND);
     }
 
+
     @PostMapping("address/{addressId}/set_default")
     public ResponseEntity<ApiResponse> setAddressDefault(@PathVariable("addressId") Long addressId){
+        //TODO:bug need to fix for single address
         ApiResponse apiResponse = addressService.changeAddressDefault(addressId);
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }

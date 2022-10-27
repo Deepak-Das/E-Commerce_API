@@ -1,0 +1,8 @@
+package com.example.ecommerce.repository.product_repo;
+
+import com.example.ecommerce.model.Product_models.details.ProductColor;
+import com.example.ecommerce.model.Product_models.details.ProductSize;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductSizeRepo extends JpaRepository<ProductSize,Long> {
+}

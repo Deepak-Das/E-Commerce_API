@@ -5,7 +5,7 @@ import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.UserDto;
 import com.example.ecommerce.repository.UserRepo;
-import com.example.ecommerce.service.UserService;
+import com.example.ecommerce.service.user_service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

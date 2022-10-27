@@ -25,7 +25,7 @@ public class ProductColor {
     private String color;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
     @OneToMany(mappedBy = "color" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)

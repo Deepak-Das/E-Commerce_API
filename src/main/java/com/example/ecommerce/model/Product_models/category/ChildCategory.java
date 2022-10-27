@@ -19,8 +19,8 @@ public class ChildCategory {
 
     @Column(length = 10,nullable = false)
     private String childCategory;
-    @ManyToOne
-    @JoinColumn(name = "child_cat_id")
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "sub_cat_id",nullable = false)
     private SubCategory subCategory;
 
 }

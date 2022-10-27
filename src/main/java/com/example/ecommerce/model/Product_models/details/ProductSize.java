@@ -26,7 +26,7 @@ public class ProductSize {
     private String size;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
     @OneToMany(mappedBy = "size" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)

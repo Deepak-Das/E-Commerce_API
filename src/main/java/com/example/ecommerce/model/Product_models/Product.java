@@ -34,6 +34,7 @@ public class Product {
 
     private int discount;
 
+    @Transient
     @Column(nullable = false)
     private boolean available;
 
@@ -51,25 +52,25 @@ public class Product {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "product",cascade = CascadeType.ALL)
     private Set<ProductImage> productImageList = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<ProductShape> productShapes = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<ProductSize> productSizes = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",fetch = FetchType.EAGER,cascade =CascadeType.ALL)
     private Set<ProductColor> productColors = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<ProductReview> productReviews = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<ProductSpec> productSpecs = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Stock> stock=new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST,mappedBy = "catId")
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "catId")
     private Set<Category> categories=new HashSet<>();
 
 

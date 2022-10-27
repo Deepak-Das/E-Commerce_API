@@ -21,11 +21,11 @@ public class SubCategory {
 
     @Column(length = 20,nullable = false)
     private String subCategory;
-    @ManyToOne
-    @JoinColumn(name = "main_cat_id")
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "main_cat_id",nullable = false)
     private MainCategory mainCategory;
 
-    @OneToMany(mappedBy = "subCategory",fetch = FetchType.EAGER)
-    private Set<ChildCategory> subCategories = new HashSet<>();
+    @OneToMany(mappedBy = "subCategory",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private Set<ChildCategory> childCategories = new HashSet<>();
 
 }

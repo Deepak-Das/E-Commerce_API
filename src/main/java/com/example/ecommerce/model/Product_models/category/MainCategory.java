@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "main_category")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -21,9 +22,9 @@ public class MainCategory {
     private Long mainId;
 
     @Column(length = 20,nullable = false)
-    private String category;
+    private String mainCategory;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "mainCategory")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "mainCategory",cascade = CascadeType.ALL)
     private Set<SubCategory> subCategories = new HashSet<>();
 
 
