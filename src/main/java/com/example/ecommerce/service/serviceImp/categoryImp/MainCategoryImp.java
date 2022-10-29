@@ -3,6 +3,7 @@ package com.example.ecommerce.service.serviceImp.categoryImp;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
+import com.example.ecommerce.payload.category.ChildCategoryDto;
 import com.example.ecommerce.payload.category.MainCategoryDto;
 import com.example.ecommerce.payload.category.SubCategoryDto;
 import com.example.ecommerce.repository.category_repo.MainCategoryRepo;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class MainCategoryImp implements MainCategoryService {
@@ -61,8 +63,8 @@ public class MainCategoryImp implements MainCategoryService {
     @Override
     public Set<SubCategoryDto> getSubCatByMain(Long mainId) {
         MainCategory mainCategory = mainCategoryRepo.findById(mainId).orElseThrow(() -> new ResourceNotFoundException("Main Category", "mainId", mainId.toString()));
-
-        return null;
+        Set<SubCategoryDto> subDtos = mainCategory.getSubCategories().stream().map(subCategory -> mapper.map(subCategory, SubCategoryDto.class)).collect(Collectors.toSet());
+        return subDtos;
     }
 
     @Override
