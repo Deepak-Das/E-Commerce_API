@@ -1,6 +1,7 @@
 package com.example.ecommerce.service.serviceImp.categoryImp;
 
 import com.example.ecommerce.exception.ResourceNotFoundException;
+import com.example.ecommerce.model.Product_models.category.ChildCategory;
 import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.payload.category.ChildCategoryDto;
@@ -14,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,8 +32,8 @@ public class MainCategoryImp implements MainCategoryService {
     private ModelMapper mapper;
 
     @Override
-    public MainCategoryDto createMainCat(MainCategoryDto mainCategoryDto) {
-        MainCategory mainCat = mapper.map(mainCategoryDto, MainCategory.class);
+    public MainCategoryDto createMainCat(MainCategoryDto mainDto) {
+        MainCategory mainCat = mapper.map(mainDto, MainCategory.class);
 
         mainCat.getSubCategories().forEach(subCategory -> {
             subCategory.setMainCategory(mainCat);

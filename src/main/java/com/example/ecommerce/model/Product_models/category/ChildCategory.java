@@ -3,6 +3,7 @@ package com.example.ecommerce.model.Product_models.category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -19,8 +20,10 @@ public class ChildCategory {
 
     @Column(length = 10,nullable = false)
     private String childCategory;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "sub_cat_id",nullable = false)
+
+
+    @ManyToOne
+    @JoinColumn(name = "subId")
     private SubCategory subCategory;
 
 }

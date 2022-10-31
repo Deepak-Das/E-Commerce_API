@@ -1,13 +1,17 @@
 package com.example.ecommerce.service.category_Service;
 
+import com.example.ecommerce.payload.category.ChildCategoryDto;
 import com.example.ecommerce.payload.category.SubCategoryDto;
+import com.example.ecommerce.util.ApiResponse;
 
 import java.util.Set;
 
 public interface ChildCategoryService {
 
-    public SubCategoryDto createMainCat(SubCategoryDto ChildCategoryDto);
-    public SubCategoryDto updateMainCat(SubCategoryDto ChildCategoryDto,Long mainId);
-    public Set<SubCategoryDto> getChildCatBySub(Long ChildId);
-    void deleteChildCat(Long subCatId);
+
+    ChildCategoryDto createChildCat(ChildCategoryDto childCategoryDto, Long subId);
+
+    public ChildCategoryDto updateChildCat(ChildCategoryDto childCategoryDto,Long childId);
+    public ChildCategoryDto childById(Long childId);
+    public ApiResponse deleteChildCat(Long childId);
 }

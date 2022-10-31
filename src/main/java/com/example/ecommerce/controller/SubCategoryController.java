@@ -41,7 +41,7 @@ public class SubCategoryController {
         return new ResponseEntity<>(subCatById,HttpStatus.FOUND);
     }
 
-    @GetMapping("subCategory/{subId}/child")
+    @GetMapping("subCategory/{subId}/childCategory")
     private ResponseEntity<Set<ChildCategoryDto>> getChildCatBySubId(@PathVariable("subId") Long subId){
         Set<ChildCategoryDto> childCategoryDtos = subCategoryService.getChildCatBySub(subId);
         return new ResponseEntity<>(childCategoryDtos,HttpStatus.FOUND);

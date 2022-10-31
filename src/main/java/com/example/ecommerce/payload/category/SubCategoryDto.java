@@ -17,7 +17,6 @@ public class SubCategoryDto {
 
     private String subCategory;
 
-
     private Set<ChildCategoryDto> childCategories = new HashSet<>();
 
 }

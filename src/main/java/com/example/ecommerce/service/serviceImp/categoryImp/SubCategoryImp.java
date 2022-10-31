@@ -5,6 +5,7 @@ import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.payload.category.ChildCategoryDto;
 import com.example.ecommerce.payload.category.SubCategoryDto;
+import com.example.ecommerce.repository.category_repo.ChildCategoryRepo;
 import com.example.ecommerce.repository.category_repo.MainCategoryRepo;
 import com.example.ecommerce.repository.category_repo.SubCategoryRepo;
 import com.example.ecommerce.service.category_Service.SubCategoryService;
@@ -13,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,9 @@ public class SubCategoryImp implements SubCategoryService {
 
     @Autowired
     private SubCategoryRepo subCategoryRepo;
+
+    @Autowired
+    private ChildCategoryRepo  childCategoryRepo;
     @Autowired
     private ModelMapper mapper;
 
@@ -31,7 +36,7 @@ public class SubCategoryImp implements SubCategoryService {
     public SubCategoryDto createSubCat(SubCategoryDto subCategoryDto,Long mainId) {
         MainCategory mainCategory = mainCategoryRepo.findById(mainId).orElseThrow(() -> new ResourceNotFoundException("Main Category", "mainId", mainId.toString()));
         SubCategory subCategory = mapper.map(subCategoryDto, SubCategory.class);
-        subCategory.setMainCategory(mainCategory);
+//        subCategory.setMainCategory(mainCategory);
         SubCategory save = subCategoryRepo.save(subCategory);
         return mapper.map(save,SubCategoryDto.class);
     }
@@ -61,7 +66,13 @@ public class SubCategoryImp implements SubCategoryService {
     @Override
     public ApiResponse deleteSubCat(Long subId) {
         SubCategory subCategory = subCategoryRepo.findById(subId).orElseThrow(() -> new ResourceNotFoundException("Sub Category", "subId", subId.toString()));
-        subCategoryRepo.delete(subCategory);
+        Long mainId=subCategory.getMainCategory().getMainId();
+        MainCategory main = mainCategoryRepo.findById(mainId).orElseThrow(() -> new ResourceNotFoundException("Main Category", "mainId", mainId.toString()));
+
+        MainCategory mainCategory = main.removeSubcategory(subCategory);
+        mainCategoryRepo.save(mainCategory);
+
+
         return new ApiResponse("deleted successfully");
     }
 }

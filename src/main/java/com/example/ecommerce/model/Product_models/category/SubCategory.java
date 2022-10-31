@@ -3,9 +3,11 @@ package com.example.ecommerce.model.Product_models.category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -19,13 +21,27 @@ public class SubCategory {
     @Column(nullable = false)
     private Long subId;
 
-    @Column(length = 20,nullable = false)
+    @Column(length = 20)
     private String subCategory;
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "main_cat_id",nullable = false)
+
+
+    @ManyToOne
+    @JoinColumn(name = "mainId")
     private MainCategory mainCategory;
 
-    @OneToMany(mappedBy = "subCategory",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private Set<ChildCategory> childCategories = new HashSet<>();
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ChildCategory> childCategories = new LinkedHashSet<>();
+
+    public SubCategory addChildCategory(ChildCategory childCategory){
+        this.childCategories.add(childCategory);
+        childCategory.setSubCategory(this);
+        return this;
+    }
+
+    public SubCategory removeChildCategory(ChildCategory childCategory){
+        this.childCategories.remove(childCategory);
+        childCategory.setSubCategory(null);
+        return this;
+    }
 
 }
