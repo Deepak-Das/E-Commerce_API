@@ -2,10 +2,16 @@ package com.example.ecommerce.service.serviceImp.product_Imp;
 
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Product_models.Product;
+import com.example.ecommerce.model.Product_models.category.ChildCategory;
+import com.example.ecommerce.model.Product_models.category.MainCategory;
+import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSpec;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.Product.ProductDto;
+import com.example.ecommerce.repository.category_repo.ChildCategoryRepo;
+import com.example.ecommerce.repository.category_repo.MainCategoryRepo;
+import com.example.ecommerce.repository.category_repo.SubCategoryRepo;
 import com.example.ecommerce.repository.product_repo.ProductRepo;
 import com.example.ecommerce.repository.product_repo.ProductShapeRepo;
 import com.example.ecommerce.repository.product_repo.ProductSpecRepo;
@@ -32,14 +38,34 @@ public class ProductServiceImp implements ProductService {
     private ProductSpecRepo productSpecRepo;
 
     @Autowired
+    private MainCategoryRepo mainCategory;
+
+
+    @Autowired
+    private SubCategoryRepo subCategory;
+    @Autowired
+    private ChildCategoryRepo childCategory;
+
+    @Autowired
     private ModelMapper mapper;
 
     @Override
-    public ProductDto createProduct(ProductDto dto, Long sellerId) {
+    public ProductDto createProduct(ProductDto dto,Long sellerId,Long mainId,Long subId,Long childId) {
 
         //todo:needed category Id -> product ->Images->stock
 
         User seller = sellerRepo.findById(sellerId).orElseThrow(() -> new ResourceNotFoundException("User", "sellerId", sellerId.toString()));
+
+        ChildCategory child_Category=null;
+
+        MainCategory main_Category = mainCategory.findById(mainId).orElseThrow(() -> new ResourceNotFoundException("Main category", "mainId", mainId.toString()));
+        SubCategory sub_Category = subCategory.findById(subId).orElseThrow(() -> new ResourceNotFoundException("Sub category", "subId", subId.toString()));
+
+//        if(childId!=null)
+//            child_Category= childCategory.findById(childId).orElseThrow(() -> new ResourceNotFoundException("Child category", "childId", childId.toString()));
+
+
+
         Product product = new Product();
 
         product.setTitle(dto.getTitle());
@@ -47,6 +73,13 @@ public class ProductServiceImp implements ProductService {
         product.setAmount(dto.getAmount());
         product.setDiscount(dto.getDiscount());
         product.setUser(seller);
+        product.setMainCategory(main_Category);
+        product.setSubCategory(sub_Category);
+//        product.setChildCategory(child_Category);
+
+//        dto.getProductShapes().forEach(productShapeDto -> product.addProductShape(mapper.map(this,ProductShape.class)));
+
+
 
         Product save = productRepo.save(product);
 
@@ -67,6 +100,7 @@ public class ProductServiceImp implements ProductService {
         productShapeRepo.saveAll(productShapes);
         productSpecRepo.saveAll(productSpecs);
 
+//        save.getma;
 
         return productById(save.getProductId());
 
@@ -101,6 +135,8 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ApiResponse deleteProduct(Long productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId.toString()));
+//        product.removeMain();
+//        product.removeSub();
         productRepo.delete(product);
         return new ApiResponse("deleted successfully");
     }

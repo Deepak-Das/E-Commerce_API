@@ -1,6 +1,9 @@
 package com.example.ecommerce.model.Product_models;
 
 import com.example.ecommerce.model.Product_models.category.Category;
+import com.example.ecommerce.model.Product_models.category.ChildCategory;
+import com.example.ecommerce.model.Product_models.category.MainCategory;
+import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.model.Product_models.details.*;
 import com.example.ecommerce.model.Product_models.orders.TbOrderDetail;
 import com.example.ecommerce.model.User;
@@ -70,17 +73,64 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Stock> stock=new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "catId")
-    private Set<Category> categories=new HashSet<>();
+//    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "catId")
+//    private Set<Category> categories=new HashSet<>();
+
 
 
 
     //Order
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private Set<TbOrderDetail> orderDetails = new HashSet<>();
 
-    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY)
+    @OneToMany( mappedBy = "product",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Cart> carts = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "main_Cat_Id")
+    private MainCategory mainCategory;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "Sub_Cat_Id")
+    private SubCategory subCategory;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "Child_Cat_Id",nullable = true)
+    private ChildCategory childCategory;
+
+
+
+     public void addProductShape (ProductShape productShape){
+        this.productShapes.add(productShape);
+    }
+     public void addProductSize (ProductSize productSize ){
+        this.productSizes.add(productSize);
+    }
+     public void addProductSpec (ProductSpec productSpec ){
+        this.productSpecs.add(productSpec);
+    }
+
+
+    public void removeProductShape (ProductShape productShape){
+        this.productShapes.remove(productShape);
+    }
+    public void removeProductSize (ProductSize productSize ){
+        this.productSizes.remove(productSize);
+    }
+    public void removeProductSpec (ProductSpec productSpec ){
+         productSpec.setProduct(null);
+        this.productSpecs.remove(productSpec);
+    }
+
+//    public void removeMain(){
+//         this.setMainCategory(null);
+//         this.mainCategory.getProducts().remove(this);
+//    }
+//    public void removeSub(){
+//         this.setSubCategory(null);
+//         this.subCategory.getProducts().remove(this);
+//    }
+
 
 
 }

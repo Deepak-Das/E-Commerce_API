@@ -1,5 +1,8 @@
 package com.example.ecommerce.model.Product_models.category;
 
+import com.example.ecommerce.model.Product_models.Product;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import jdk.jfr.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +30,12 @@ public class MainCategory {
     @Column(length = 20,nullable = false)
     private String mainCategory;
 
+
     @OneToMany(mappedBy = "mainCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SubCategory> subCategories = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "mainCategory", orphanRemoval = true)
+    private Set<Product> products = new LinkedHashSet<>();
 
     public MainCategory addSubCategory(SubCategory subCategory){
         this.subCategories.add(subCategory);

@@ -1,11 +1,20 @@
 package com.example.ecommerce.payload.Product;
 
 import com.example.ecommerce.model.Product_models.category.Category;
+import com.example.ecommerce.model.Product_models.category.ChildCategory;
+import com.example.ecommerce.model.Product_models.category.MainCategory;
+import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSpec;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.StockDto;
 import com.example.ecommerce.payload.UserDto;
+import com.example.ecommerce.payload.category.ChildCategoryDto;
+import com.example.ecommerce.payload.category.MainCategoryDto;
+import com.example.ecommerce.payload.category.Response.ChildCategoryDto_res;
+import com.example.ecommerce.payload.category.Response.MainCategoryDto_res;
+import com.example.ecommerce.payload.category.Response.SubCategoryDto_res;
+import com.example.ecommerce.payload.category.SubCategoryDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -55,11 +64,15 @@ public class ProductDto {
 
     private Set<ProductColorDto> productColors = new HashSet<>();
 
+    private MainCategoryDto_res mainCategory;
+    private SubCategoryDto_res subCategory;
+    private ChildCategoryDto_res childCategory;
+
 
 
     private Set<ProductSpecDto> productSpecs = new HashSet<>();
 
     private Set<StockDto> stock=new HashSet<>();
-    private Set<Category> categories=new HashSet<>();
+//    private Set<Category> categories=new HashSet<>();
 
 }

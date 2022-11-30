@@ -1,5 +1,6 @@
 package com.example.ecommerce.model.Product_models.category;
 
+import com.example.ecommerce.model.Product_models.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,9 @@ public class SubCategory {
 
     @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ChildCategory> childCategories = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "subCategory", orphanRemoval = true)
+    private Set<Product> products = new LinkedHashSet<>();
 
     public SubCategory addChildCategory(ChildCategory childCategory){
         this.childCategories.add(childCategory);
