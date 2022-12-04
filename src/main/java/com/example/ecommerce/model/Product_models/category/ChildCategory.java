@@ -29,7 +29,7 @@ public class ChildCategory {
     @JoinColumn(name = "subId")
     private SubCategory subCategory;
 
-    @OneToMany(mappedBy = "childCategory", orphanRemoval = true)
+    @OneToMany(mappedBy = "childCategory", orphanRemoval = false)
     private Set<Product> products = new LinkedHashSet<>();
 
 }

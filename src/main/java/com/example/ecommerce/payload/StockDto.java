@@ -5,11 +5,14 @@ import com.example.ecommerce.model.Product_models.details.ProductColor;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSize;
 import com.example.ecommerce.payload.Product.ProductColorDto;
+import com.example.ecommerce.payload.Product.ProductDto;
 import com.example.ecommerce.payload.Product.ProductShapeDto;
 import com.example.ecommerce.payload.Product.ProductSizeDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -17,16 +20,18 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class StockDto {
+    @JsonIgnore
     private Long stockId;
 
     private int credit;
     private int debate;
 
-    private ProductShapeDto shape;
-    private ProductSizeDto size;
-    private ProductColorDto color;
 
-//    private Product product;
+    private int count;
+
+    @JsonIgnore
+    private ProductDto product;
+
 
 
 

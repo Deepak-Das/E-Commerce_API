@@ -24,15 +24,19 @@ public class ProductColor {
     @Column(nullable = false,length = 20)
     private String color;
 
+
+
     @ManyToOne
     @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "color" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-    private Set<TbOrderDetail> orderDetails=new HashSet<>();
 
-    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-    private Set<Stock> stocks=new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
+
+
 
 
 }

@@ -5,17 +5,16 @@ import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.Product_models.category.ChildCategory;
 import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
-import com.example.ecommerce.model.Product_models.details.ProductShape;
-import com.example.ecommerce.model.Product_models.details.ProductSpec;
+import com.example.ecommerce.model.Product_models.details.*;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.Product.ProductDto;
+import com.example.ecommerce.repository.UserRepo;
 import com.example.ecommerce.repository.category_repo.ChildCategoryRepo;
 import com.example.ecommerce.repository.category_repo.MainCategoryRepo;
 import com.example.ecommerce.repository.category_repo.SubCategoryRepo;
 import com.example.ecommerce.repository.product_repo.ProductRepo;
 import com.example.ecommerce.repository.product_repo.ProductShapeRepo;
 import com.example.ecommerce.repository.product_repo.ProductSpecRepo;
-import com.example.ecommerce.repository.UserRepo;
 import com.example.ecommerce.service.product_service.ProductService;
 import com.example.ecommerce.util.ApiResponse;
 import org.modelmapper.ModelMapper;
@@ -27,43 +26,48 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
-    @Autowired
-    private ProductRepo productRepo;
-    @Autowired
-    private UserRepo sellerRepo;
-
-    @Autowired
-    private ProductShapeRepo productShapeRepo;
-    @Autowired
-    private ProductSpecRepo productSpecRepo;
-
-    @Autowired
-    private MainCategoryRepo mainCategory;
+    private final ProductRepo productRepo;
+    private final UserRepo sellerRepo;
 
 
-    @Autowired
-    private SubCategoryRepo subCategory;
-    @Autowired
-    private ChildCategoryRepo childCategory;
+    private final MainCategoryRepo mainCategory;
+
+
+    private final SubCategoryRepo subCategory;
+    private final ChildCategoryRepo childCategory;
+
+    private final ModelMapper mapper;
+
+    private final ProductShapeRepo productShapeRepo;
+    private final ProductSpecRepo productSpecRepo;
 
     @Autowired
-    private ModelMapper mapper;
+    public ProductServiceImp(ProductRepo productRepo, UserRepo sellerRepo, MainCategoryRepo mainCategory, SubCategoryRepo subCategory, ChildCategoryRepo childCategory, ModelMapper mapper, ProductShapeRepo productShapeRepo, ProductSpecRepo productSpecRepo) {
+        this.productRepo = productRepo;
+        this.sellerRepo = sellerRepo;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
+        this.childCategory = childCategory;
+        this.mapper = mapper;
+        this.productShapeRepo = productShapeRepo;
+        this.productSpecRepo = productSpecRepo;
+    }
 
     @Override
-    public ProductDto createProduct(ProductDto dto,Long sellerId,Long mainId,Long subId,Long childId) {
+    public ProductDto createProduct(ProductDto dto, Long sellerId, Long mainId, Long subId, Long childId) {
 
         //todo:needed category Id -> product ->Images->stock
 
         User seller = sellerRepo.findById(sellerId).orElseThrow(() -> new ResourceNotFoundException("User", "sellerId", sellerId.toString()));
 
-        ChildCategory child_Category=null;
+        ChildCategory child_Category = null;
 
         MainCategory main_Category = mainCategory.findById(mainId).orElseThrow(() -> new ResourceNotFoundException("Main category", "mainId", mainId.toString()));
         SubCategory sub_Category = subCategory.findById(subId).orElseThrow(() -> new ResourceNotFoundException("Sub category", "subId", subId.toString()));
 
-//        if(childId!=null)
-//            child_Category= childCategory.findById(childId).orElseThrow(() -> new ResourceNotFoundException("Child category", "childId", childId.toString()));
 
+        if (childId != null)
+            child_Category = childCategory.findById(childId).orElseThrow(() -> new ResourceNotFoundException("Child category", "childId", childId.toString()));
 
 
         Product product = new Product();
@@ -75,36 +79,61 @@ public class ProductServiceImp implements ProductService {
         product.setUser(seller);
         product.setMainCategory(main_Category);
         product.setSubCategory(sub_Category);
-//        product.setChildCategory(child_Category);
-
-//        dto.getProductShapes().forEach(productShapeDto -> product.addProductShape(mapper.map(this,ProductShape.class)));
+        product.setChildCategory(child_Category);
 
 
-
-        Product save = productRepo.save(product);
-
-        Set<ProductShape> productShapes = dto.getProductShapes().stream().map(productShapeDto -> {
-                ProductShape map = mapper.map(productShapeDto, ProductShape.class);
-                map.setProduct(save);
-                return map;
-                }
-
-        ).collect(Collectors.toSet());
-
-        Set<ProductSpec> productSpecs = dto.getProductSpecs().stream().map(productSpecDto -> {
-            ProductSpec map = mapper.map(productSpecDto, ProductSpec.class);
-            map.setProduct(save);
-            return map;
+        Set<ProductSpec> specs = dto.getProductSpecs().stream().map(specDto -> {
+            ProductSpec spec = mapper.map(specDto, ProductSpec.class);
+            spec.setProduct(product);
+            return spec;
         }).collect(Collectors.toSet());
 
-        productShapeRepo.saveAll(productShapes);
-        productSpecRepo.saveAll(productSpecs);
+        product.setProductSpecs(specs);
 
-//        save.getma;
+        Set<ProductShape> shapes = dto.getProductShapes().stream().map(shapeDto -> {
+            ProductShape shape = mapper.map(shapeDto, ProductShape.class);
+            shape.setProduct(product);
+            Stock stock = mapper.map(shapeDto.getStock(), Stock.class);
+            shape.setStock(stock);
 
-        return productById(save.getProductId());
+            return shape;
+        }).collect(Collectors.toSet());
+
+        product.setProductShapes(shapes);
+
+        Set<ProductSize> sizes = dto.getProductSizes().stream().map(sizeDto -> {
+            ProductSize size = mapper.map(sizeDto, ProductSize.class);
+            size.setProduct(product);
+            Stock stock = mapper.map(sizeDto.getStock(), Stock.class);
+            size.setStock(stock);
+            return size;
+        }).collect(Collectors.toSet());
+
+        product.setProductSizes(sizes);
+
+        Set<ProductColor> colors = dto.getProductColors().stream().map(colorDto -> {
+            ProductColor color = mapper.map(colorDto, ProductColor.class);
+            color.setProduct(product);
+            Stock stock = mapper.map(colorDto.getStock(), Stock.class);
+            color.setStock(stock);
+            return color;
+        }).collect(Collectors.toSet());
+
+        product.setProductColors(colors);
+
+        Stock stock = mapper.map(dto.getStock(), Stock.class);
+        product.setStock(stock);
 
 
+
+
+
+
+        Product productSave = productRepo.save(product);
+
+
+
+        return mapper.map(productSave, ProductDto.class);
 
     }
 

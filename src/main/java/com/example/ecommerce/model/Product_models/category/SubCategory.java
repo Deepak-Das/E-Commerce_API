@@ -33,7 +33,7 @@ public class SubCategory {
     @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ChildCategory> childCategories = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "subCategory", orphanRemoval = true)
+    @OneToMany(mappedBy = "subCategory", orphanRemoval = false)
     private Set<Product> products = new LinkedHashSet<>();
 
     public SubCategory addChildCategory(ChildCategory childCategory){

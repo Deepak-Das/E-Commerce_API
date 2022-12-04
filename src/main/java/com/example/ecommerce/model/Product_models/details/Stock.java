@@ -4,6 +4,7 @@ import com.example.ecommerce.model.Product_models.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -23,22 +24,14 @@ public class Stock {
     @Column(nullable = false)
     private int debate;
 
-    @ManyToOne()
-    @JoinColumn(name = "shape_id")
-    private  ProductShape shape;
-    @ManyToOne()
-    @JoinColumn(name = "size_id")
-    private ProductSize size;
-    @ManyToOne()
-    @JoinColumn(name = "color_id")
-    private ProductColor color;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(nullable = false,name = "product_id")
-    private Product product;
+    @Formula("credit - debate")
+    private int count;
 
 
-
+//    @ManyToOne(cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "product_id",nullable = false)
+//    private Product product;
 
 
 

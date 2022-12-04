@@ -6,6 +6,7 @@ import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSpec;
+import com.example.ecommerce.model.Product_models.details.Stock;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.StockDto;
 import com.example.ecommerce.payload.UserDto;
@@ -52,7 +53,8 @@ public class ProductDto {
 
     private int avgRate;
 
-    private int soldCount;
+
+//    private int soldCount;
     //drive during response
 
     @JsonIgnore
@@ -68,11 +70,10 @@ public class ProductDto {
     private SubCategoryDto_res subCategory;
     private ChildCategoryDto_res childCategory;
 
-
-
     private Set<ProductSpecDto> productSpecs = new HashSet<>();
 
-    private Set<StockDto> stock=new HashSet<>();
-//    private Set<Category> categories=new HashSet<>();
+    private StockDto stock;
+
+
 
 }

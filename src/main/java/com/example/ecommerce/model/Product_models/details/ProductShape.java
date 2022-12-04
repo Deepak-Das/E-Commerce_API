@@ -24,15 +24,22 @@ public class ProductShape {
     @Column(nullable = false)
     private String shape;
 
+
     @ManyToOne()
     @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "shape" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-    private Set<TbOrderDetail> orderDetails=new HashSet<>();
 
-    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-    private Set<Stock> stocks=new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
+
+
+
+
+
+
+
 
 
 

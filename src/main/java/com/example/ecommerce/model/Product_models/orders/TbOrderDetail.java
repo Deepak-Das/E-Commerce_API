@@ -25,17 +25,8 @@ public class TbOrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "shape_id")
-    private ProductShape shape;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "size_id")
-    private ProductSize size;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "color_id")
-    private ProductColor color;
 
     private Integer amount;
 
@@ -47,5 +38,14 @@ public class TbOrderDetail {
     @JoinColumn(name = "track_id",referencedColumnName = "trackId")
     private Tracking tracking;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "color_id")
+    private ProductColor productColor;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "shape_id")
+    private ProductShape productShape;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "size_id")
+    private ProductSize productSize;
 
 }

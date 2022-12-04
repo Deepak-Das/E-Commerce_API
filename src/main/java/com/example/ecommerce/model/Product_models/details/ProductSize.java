@@ -25,15 +25,17 @@ public class ProductSize {
     @Column(nullable = false)
     private String size;
 
+
+
     @ManyToOne
     @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
-    @OneToMany(mappedBy = "size" ,cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
-    private Set<TbOrderDetail> orderDetails=new HashSet<>();
 
-    @OneToMany(mappedBy = "stockId" ,cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
-    private Set<Stock> stocks=new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "stockId")
+    private Stock stock;
 
 
 
