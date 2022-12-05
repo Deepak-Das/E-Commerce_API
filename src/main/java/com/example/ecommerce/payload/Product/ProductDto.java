@@ -4,6 +4,7 @@ import com.example.ecommerce.model.Product_models.category.Category;
 import com.example.ecommerce.model.Product_models.category.ChildCategory;
 import com.example.ecommerce.model.Product_models.category.MainCategory;
 import com.example.ecommerce.model.Product_models.category.SubCategory;
+import com.example.ecommerce.model.Product_models.details.ProductReview;
 import com.example.ecommerce.model.Product_models.details.ProductShape;
 import com.example.ecommerce.model.Product_models.details.ProductSpec;
 import com.example.ecommerce.model.Product_models.details.Stock;
@@ -65,12 +66,16 @@ public class ProductDto {
     private Set<ProductSizeDto> productSizes = new HashSet<>();
 
     private Set<ProductColorDto> productColors = new HashSet<>();
+    private Set<ProductImageDto> productImages = new HashSet<>();
 
     private MainCategoryDto_res mainCategory;
     private SubCategoryDto_res subCategory;
     private ChildCategoryDto_res childCategory;
 
     private Set<ProductSpecDto> productSpecs = new HashSet<>();
+
+    private Set<ProductReviewDto> productReviews = new HashSet<>();
+
 
     private StockDto stock;
 

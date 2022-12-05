@@ -1,5 +1,6 @@
 package com.example.ecommerce.service.serviceImp.product_Imp;
 
+import com.example.ecommerce.exception.AlreadyExistException;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Product_models.Product;
 import com.example.ecommerce.model.Product_models.category.ChildCategory;
@@ -8,19 +9,27 @@ import com.example.ecommerce.model.Product_models.category.SubCategory;
 import com.example.ecommerce.model.Product_models.details.*;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.payload.Product.ProductDto;
+import com.example.ecommerce.payload.Product.ProductImageDto;
 import com.example.ecommerce.repository.UserRepo;
 import com.example.ecommerce.repository.category_repo.ChildCategoryRepo;
 import com.example.ecommerce.repository.category_repo.MainCategoryRepo;
 import com.example.ecommerce.repository.category_repo.SubCategoryRepo;
+import com.example.ecommerce.repository.product_repo.ProductImageRepo;
 import com.example.ecommerce.repository.product_repo.ProductRepo;
 import com.example.ecommerce.repository.product_repo.ProductShapeRepo;
 import com.example.ecommerce.repository.product_repo.ProductSpecRepo;
+import com.example.ecommerce.service.product_service.FileService;
 import com.example.ecommerce.service.product_service.ProductService;
+import com.example.ecommerce.util.ApiConstant;
 import com.example.ecommerce.util.ApiResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,8 +50,12 @@ public class ProductServiceImp implements ProductService {
     private final ProductShapeRepo productShapeRepo;
     private final ProductSpecRepo productSpecRepo;
 
+    private final ProductImageRepo productImageRepo;
+
+    private final FileService fileService;
+
     @Autowired
-    public ProductServiceImp(ProductRepo productRepo, UserRepo sellerRepo, MainCategoryRepo mainCategory, SubCategoryRepo subCategory, ChildCategoryRepo childCategory, ModelMapper mapper, ProductShapeRepo productShapeRepo, ProductSpecRepo productSpecRepo) {
+    public ProductServiceImp(ProductRepo productRepo, UserRepo sellerRepo, MainCategoryRepo mainCategory, SubCategoryRepo subCategory, ChildCategoryRepo childCategory, ModelMapper mapper, ProductShapeRepo productShapeRepo, ProductSpecRepo productSpecRepo, FileService fileService, ProductImageRepo productImageRepo) {
         this.productRepo = productRepo;
         this.sellerRepo = sellerRepo;
         this.mainCategory = mainCategory;
@@ -51,6 +64,8 @@ public class ProductServiceImp implements ProductService {
         this.mapper = mapper;
         this.productShapeRepo = productShapeRepo;
         this.productSpecRepo = productSpecRepo;
+        this.fileService = fileService;
+        this.productImageRepo = productImageRepo;
     }
 
     @Override
@@ -125,12 +140,7 @@ public class ProductServiceImp implements ProductService {
         product.setStock(stock);
 
 
-
-
-
-
         Product productSave = productRepo.save(product);
-
 
 
         return mapper.map(productSave, ProductDto.class);
@@ -164,9 +174,61 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ApiResponse deleteProduct(Long productId) {
         Product product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId.toString()));
-//        product.removeMain();
-//        product.removeSub();
+
         productRepo.delete(product);
         return new ApiResponse("deleted successfully");
+    }
+
+    @Override
+    public ProductImageDto uploadImg(String path, MultipartFile file, Long productId, String type) throws IOException {
+
+        Product product = productRepo.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId.toString()));
+        ProductImage image = new ProductImage();
+
+
+        String name = fileService.uploadImg(path, file);
+        String url = "localhost:8080/api/products/image/" + name;
+
+        boolean exists = productImageRepo.existsByProductAndTypeIgnoreCase(product, ApiConstant.IMAGE_TYPE_MAIN);
+
+        if (type.equalsIgnoreCase(ApiConstant.IMAGE_TYPE_MAIN)) {
+            if (exists) throw new AlreadyExistException("image", "type", "Main");
+            image.setType(ApiConstant.IMAGE_TYPE_MAIN);
+        } else image.setType(ApiConstant.IMAGE_TYPE_NORMAL);
+
+        image.setPath(url);
+        image.setProduct(product);
+
+        ProductImage save = productImageRepo.save(image);
+        return mapper.map(save, ProductImageDto.class);
+
+
+    }
+
+    @Override
+    public InputStream downloadImg(String path, String fileName) throws IOException {
+        return fileService.getResource(path, fileName);
+    }
+
+
+    @Override
+    public ApiResponse deleteProductImage(String path, Long imageId) {
+
+        ProductImage productImage = productImageRepo.findById(imageId).orElseThrow(() -> new ResourceNotFoundException("Image", "imageId", imageId.toString()));
+
+        String url = productImage.getPath();
+        String name = url.substring(url.lastIndexOf(File.separator));
+
+
+        boolean deleted = fileService.deleteImg(path, name);
+
+        productImageRepo.save(productImage.removeProduct(productImage.getProduct()));
+
+        if (deleted) {
+            return new ApiResponse("deleted successfully");
+        }
+
+        return new ApiResponse("delete failed");
+
     }
 }

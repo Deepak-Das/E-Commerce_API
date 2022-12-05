@@ -21,14 +21,20 @@ public class ProductImage {
 
     @Column(nullable = false)
     private String path;
-    @Column(nullable = false)
-    private String imageName;
+
     @Column(nullable = false)
     private String type;
 
     //Todo:image with different color (one to Many with Color)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id",nullable = false)
     private Product product;
+
+
+    public ProductImage removeProduct(Product product){
+        product.getProductImages().remove(this);
+        this.setProduct(null);
+        return  this;
+    }
 
 }

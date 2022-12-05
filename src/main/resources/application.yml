@@ -18,10 +18,11 @@ spring:
   servlet:
     multipart:
       max-file-size: 1MB
-      min-file-size: 500KB
+
 #    show-sql: true
 
 
 
 project:
-    image: Images/
+    image: Image
+

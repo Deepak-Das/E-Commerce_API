@@ -51,8 +51,8 @@ public class Product {
     @ManyToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<ProductImage> productImageList = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<ProductImage> productImages = new HashSet<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductShape> productShapes = new HashSet<>();
